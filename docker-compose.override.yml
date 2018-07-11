@@ -1,0 +1,19 @@
+version: '3.4'
+
+services:
+  rabbitmq:
+    ports:
+      - "15672:15672"  # Important: In a production environment your should remove the external port
+      - "5672:5672"    # Important: In a production environment your should remove the external port
+
+  rabbitmqservice:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://0.0.0.0:80
+      - EventBusConnection=${MICROSERVICES_AZURE_SERVICE_BUS:-rabbitmq}
+      - EventBusUserName=${MICROSERVICES_SERVICE_BUS_USERNAME}
+      - EventBusPassword=${MICROSERVICES_SERVICE_BUS_PASSWORD}
+    ports:
+      - "5101:80"   # Important: In a production environment your should remove the external port (5102) kept here for microservice debugging purposes. 
+                    # The API Gateway redirects and access through the internal port (80).
+

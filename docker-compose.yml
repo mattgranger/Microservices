@@ -1,0 +1,13 @@
+version: '3.4'
+
+services:
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+
+  rabbitmqservice:
+    image: microservices/rabbitmqservice:${TAG:-latest}
+    build:
+      context: .
+      dockerfile: RabbitMqService/Dockerfile
+    depends_on:
+      - rabbitmq

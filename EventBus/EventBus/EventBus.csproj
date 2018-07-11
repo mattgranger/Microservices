@@ -1,0 +1,9 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <RootNamespace>Microservices.EventBus</RootNamespace>
+    <AssemblyName>Microservices.EventBus</AssemblyName>
+  </PropertyGroup>
+
+</Project>
