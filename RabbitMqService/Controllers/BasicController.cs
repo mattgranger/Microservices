@@ -5,6 +5,7 @@
     using System.Threading.Tasks;
     using Infrastructure;
     using Infrastructure.Events;
+    using Microservices.EventBus.Abstractions;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Options;
@@ -12,15 +13,15 @@
 
     [Route("api/v1/[controller]")]
     [ApiController]
-    public class HelloWorldController : Controller
+    public class BasicController : Controller
     {
-        private readonly IBasicIntegrationEventService basicIntegrationEventService;
-        private readonly ILogger<HelloWorldController> logger;
+        private readonly IEventBus eventBus;
+        private readonly ILogger<BasicController> logger;
         private readonly QueueSettings settings;
 
-        public HelloWorldController(IBasicIntegrationEventService basicIntegrationEventService, ILogger<HelloWorldController> logger, IOptions<QueueSettings> settings)
+        public BasicController(IEventBus eventBus, ILogger<BasicController> logger, IOptions<QueueSettings> settings)
         {
-            this.basicIntegrationEventService = basicIntegrationEventService;
+            this.eventBus = eventBus;
             this.logger = logger;
             this.settings = settings?.Value ?? throw new ArgumentNullException(nameof(settings));
         }
@@ -29,8 +30,10 @@
         [Route("publish")]
         public async Task<IActionResult> BasicPublish(string message)
         {
-            await this.basicIntegrationEventService.PublishThroughEventBusAsync(new BasicEvent(message));
-
+            this.eventBus.Publish(new BasicEvent(message));
+            this.logger.LogError($"{Environment.NewLine}The message: '{message}' was published {Environment.NewLine}");
+            await Task.CompletedTask;
+            
             return new OkResult();
         }
     }

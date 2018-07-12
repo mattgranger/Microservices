@@ -1,2 +1,2 @@
 # Microservices
-Experimental RabbitMQ stuff
+Experimental RabbitMQ using Docker containers

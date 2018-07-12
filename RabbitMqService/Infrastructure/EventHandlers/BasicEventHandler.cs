@@ -1,5 +1,6 @@
 ﻿namespace RabbitMqService.Infrastructure.EventHandlers
 {
+    using System;
     using System.Threading.Tasks;
     using Events;
     using Microservices.EventBus.Abstractions;
@@ -7,18 +8,17 @@
 
     public class BasicEventHandler: IIntegrationEventHandler<BasicEvent>
     {
-        private readonly ILoggerFactory logger;
+        private readonly ILoggerFactory loggerFactory;
 
-        public BasicEventHandler(ILoggerFactory logger)
+        public BasicEventHandler(ILoggerFactory loggerFactory)
         {
-            this.logger = logger;
+            this.loggerFactory = loggerFactory;
         }
 
         public async Task Handle(BasicEvent @event)
         {
-            this.logger.CreateLogger(nameof(BasicEventHandler))
-                .LogTrace($"UserCheckoutAccepted integration event has been received and a create new order process is started with requestId: {@event.Id}");
-
+            var logger = this.loggerFactory.CreateLogger(nameof(BasicEventHandler));
+            logger.LogInformation($"{Environment.NewLine}Basic integration event has been received and a the message with requestId '{@event.Id}' was '{@event.Message}' {Environment.NewLine}");
             await Task.CompletedTask;
         }
     }

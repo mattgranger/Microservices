@@ -3,13 +3,14 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27703.2035
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RabbitMqService", "RabbitMqService\RabbitMqService.csproj", "{E97B6E1B-3007-4831-A091-4F398208F380}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RabbitMqService", "RabbitMqService\RabbitMqService.csproj", "{E97B6E1B-3007-4831-A091-4F398208F380}"
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{CE0CD613-54E7-4052-B33C-C95B0A4B723B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{7E12D875-9977-4CFE-8B11-07F158E7A1A3}"
 	ProjectSection(SolutionItems) = preProject
 		.env = .env
+		README.md = README.md
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{6DC50B1C-DE96-4CEB-8E11-F134A0CC55AD}"
