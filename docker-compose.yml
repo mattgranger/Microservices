@@ -4,6 +4,9 @@ services:
   rabbitmq:
     image: rabbitmq:3-management-alpine
 
+  nosql.data:
+    image: mongo
+
   rabbitmqservice:
     image: microservices/rabbitmqservice:${TAG:-latest}
     build:
@@ -11,3 +14,20 @@ services:
       dockerfile: RabbitMqService/Dockerfile
     depends_on:
       - rabbitmq
+
+  service1.api:
+    image: microservices/service1api:${TAG:-latest}
+    build:
+      context: .
+      dockerfile: Services/Service1.API/Dockerfile
+    depends_on:
+      - rabbitmq
+
+  mongoservice:
+    image: microservices/mongoservice:${TAG:-latest}
+    build:
+      context: .
+      dockerfile: Services/MongoService/Dockerfile
+    depends_on:
+      - rabbitmq
+      - nosql.data

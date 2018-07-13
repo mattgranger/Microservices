@@ -1,12 +1,12 @@
-﻿namespace RabbitMqService.Infrastructure.Filters
+﻿namespace Core.WebApi.Filters
 {
     using System.Net;
     using ActionResults;
     using Exceptions;
-    using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.Filters;
+    using Microsoft.Extensions.Hosting;
     using Microsoft.Extensions.Logging;
 
     public class HttpGlobalExceptionFilter : IExceptionFilter

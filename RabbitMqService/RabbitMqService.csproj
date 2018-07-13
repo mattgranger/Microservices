@@ -6,14 +6,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Application\**" />
     <Compile Remove="Tasks\**" />
+    <Content Remove="Application\**" />
     <Content Remove="Tasks\**" />
+    <EmbeddedResource Remove="Application\**" />
     <EmbeddedResource Remove="Tasks\**" />
+    <None Remove="Application\**" />
     <None Remove="Tasks\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Application\" />
+    <Folder Include="Infrastructure\Events\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>
 
@@ -26,6 +30,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Core\Core.WebApi\Core.WebApi.csproj" />
+    <ProjectReference Include="..\Domain\Domain.IntegrationEvents\Domain.IntegrationEvents.csproj" />
     <ProjectReference Include="..\EventBus\EventBusRabbitMQ\EventBusRabbitMQ.csproj" />
     <ProjectReference Include="..\EventBus\EventBusServiceBus\EventBusServiceBus.csproj" />
   </ItemGroup>

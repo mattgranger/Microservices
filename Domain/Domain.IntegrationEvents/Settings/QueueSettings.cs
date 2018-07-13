@@ -1,8 +1,8 @@
-﻿namespace RabbitMqService
+﻿namespace Domain.IntegrationEvents.Settings
 {
     public class QueueSettings
     {
-        public string BasicQueueName { get; set; }
+        public string SubscriptionClientName { get; set; }
 
         public string EventBusConnection { get; set; }
 

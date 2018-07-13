@@ -1,10 +1,10 @@
-﻿namespace RabbitMqService.Infrastructure.Events
+﻿namespace Domain.IntegrationEvents.Events
 {
     using Microservices.EventBus.Events;
 
-    public class BasicEvent : IntegrationEvent
+    public class BasicIntegrationEvent : IntegrationEvent
     {
-        public BasicEvent(string message)
+        public BasicIntegrationEvent(string message)
         {
             this.Message = message;
         }

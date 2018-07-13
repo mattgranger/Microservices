@@ -1,4 +1,4 @@
-﻿namespace RabbitMqService.Infrastructure.AutofacModules
+﻿namespace Service1.API.Intrastructure.AutofacModules
 {
     using System.Reflection;
     using Autofac;

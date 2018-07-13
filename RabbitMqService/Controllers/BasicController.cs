@@ -1,15 +1,13 @@
 ﻿namespace RabbitMqService.Controllers
 {
     using System;
-    using System.Text;
     using System.Threading.Tasks;
-    using Infrastructure;
-    using Infrastructure.Events;
+    using Domain.IntegrationEvents.Events;
+    using Domain.IntegrationEvents.Settings;
     using Microservices.EventBus.Abstractions;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Options;
-    using RabbitMQ.Client;
 
     [Route("api/v1/[controller]")]
     [ApiController]
@@ -30,7 +28,8 @@
         [Route("publish")]
         public async Task<IActionResult> BasicPublish(string message)
         {
-            this.eventBus.Publish(new BasicEvent(message));
+            this.eventBus.Publish(new BasicIntegrationEvent(message));
+            this.eventBus.Publish(new PersistedBasicIntegrationEvent(message));
             this.logger.LogError($"{Environment.NewLine}The message: '{message}' was published {Environment.NewLine}");
             await Task.CompletedTask;
             

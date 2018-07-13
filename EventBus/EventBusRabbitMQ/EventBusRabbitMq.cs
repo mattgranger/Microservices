@@ -24,6 +24,7 @@
         private readonly IRabbitMqPersistentConnection persistentConnection;
         private readonly ILogger<EventBusRabbitMq> logger;
         private readonly ILifetimeScope autofac;
+        private readonly string exchangeType;
         private readonly IEventBusSubscriptionsManager subsManager;
         private readonly int retryCount;
         private readonly string AUTOFAC_SCOPE_NAME = "microservices_event_bus";
@@ -32,12 +33,13 @@
         private string queueName;
 
         public EventBusRabbitMq(IRabbitMqPersistentConnection persistentConnection, ILogger<EventBusRabbitMq> logger,
-            ILifetimeScope autofac, IEventBusSubscriptionsManager subsManager, string queueName = null, int retryCount = 5)
+            ILifetimeScope autofac, IEventBusSubscriptionsManager subsManager, string exchangeType = ExchangeTypes.Direct, string queueName = null, int retryCount = 5)
         {
             this.persistentConnection = persistentConnection ?? throw new ArgumentNullException(nameof(persistentConnection));;
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));;
             this.subsManager = subsManager ?? new InMemoryEventBusSubscriptionsManager();;
             this.autofac = autofac;
+            this.exchangeType = exchangeType;
             this.queueName = queueName;
             this.retryCount = retryCount;
 
@@ -69,10 +71,12 @@
 
             var channel = this.persistentConnection.CreateModel();
 
-            channel.ExchangeDeclare(exchange: BROKER_NAME,
-                type: "direct");
+            channel.ExchangeDeclare(
+                exchange: BROKER_NAME,
+                type: this.exchangeType);
 
-            channel.QueueDeclare(queue: this.queueName,
+            channel.QueueDeclare(
+                queue: this.queueName,
                 durable: true,
                 exclusive: false,
                 autoDelete: false,
@@ -90,7 +94,8 @@
                 channel.BasicAck(ea.DeliveryTag,multiple:false);
             };
 
-            channel.BasicConsume(queue: this.queueName,
+            channel.BasicConsume(
+                queue: this.queueName,
                 autoAck: false,
                 consumer: consumer);
 
@@ -147,7 +152,7 @@
             {
                 var eventName = @event.GetType().Name;
 
-                channel.ExchangeDeclare(exchange: BROKER_NAME, type: "direct");
+                channel.ExchangeDeclare(exchange: BROKER_NAME, type: this.exchangeType);
 
                 var message = JsonConvert.SerializeObject(@event);
                 var body = Encoding.UTF8.GetBytes(message);
@@ -157,7 +162,8 @@
                     var properties = channel.CreateBasicProperties();
                     properties.DeliveryMode = 2; // persistent
 
-                    channel.BasicPublish(exchange: BROKER_NAME,
+                    channel.BasicPublish(
+                        exchange: BROKER_NAME,
                         routingKey: eventName,
                         mandatory:true,
                         basicProperties: properties,
@@ -182,7 +188,8 @@
 
                 using (var channel = this.persistentConnection.CreateModel())
                 {
-                    channel.QueueBind(queue: this.queueName,
+                    channel.QueueBind(
+                        queue: this.queueName,
                         exchange: BROKER_NAME,
                         routingKey: eventName);
                 }

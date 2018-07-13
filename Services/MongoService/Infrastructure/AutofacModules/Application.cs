@@ -1,9 +1,10 @@
-﻿namespace RabbitMqService.Infrastructure.AutofacModules
+﻿namespace MongoService.Infrastructure.AutofacModules
 {
     using System.Reflection;
     using Autofac;
     using EventHandlers;
     using Microservices.EventBus.Abstractions;
+    using Mongo.Infrustructure.Repositories;
 
     public class ApplicationModule
         : Autofac.Module
@@ -17,9 +18,9 @@
 
         protected override void Load(ContainerBuilder builder)
         {
-            //builder.RegisterType<OrderRepository>()
-            //    .As<IOrderRepository>()
-            //    .InstancePerLifetimeScope();
+            builder.RegisterType<MessageingDataRepository>()
+                .As<IMessageingDataRepository>()
+                .InstancePerLifetimeScope();
 
             builder.RegisterAssemblyTypes(typeof(BasicIntegrationEventHandler).GetTypeInfo().Assembly)
                 .AsClosedTypesOf(typeof(IIntegrationEventHandler<>));

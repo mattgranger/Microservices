@@ -1,4 +1,4 @@
-﻿namespace RabbitMqService
+﻿namespace Service1.API
 {
     using System;
     using Autofac;
@@ -6,13 +6,13 @@
     using Core.WebApi.Startup;
     using Domain.IntegrationEvents.Events;
     using Domain.IntegrationEvents.Settings;
-    using Infrastructure.AutofacModules;
+    using Intrastructure.AutofacModules;
     using Microservices.EventBus.Abstractions;
+    using Microsoft.Extensions.Logging;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
-    using Microsoft.Extensions.Logging;
 
     public class Startup
     {
@@ -32,7 +32,7 @@
                 .AddCustomOptions(this.Configuration)
                 .AddIntegrationServices(this.Configuration)
                 .AddEventBus(this.Configuration, this.Configuration["SubscriptionClientName"])
-                .AddSwagger("RabbitMqService - Messaging API", "v1", "The RabbitMQ Microservice HTTP API. This is a Messaging microservice sample");
+                .AddSwagger("Service 1 - API", "v1", "The Service 1 Microservice HTTP API. This is a microservice sample");
 
             var container = new ContainerBuilder();
             container.Populate(services);
@@ -83,6 +83,7 @@
         public static IServiceCollection AddCustomOptions(this IServiceCollection services, IConfiguration configuration)
         {
             services.Configure<QueueSettings>(configuration);
+
             return services;
         }
     }

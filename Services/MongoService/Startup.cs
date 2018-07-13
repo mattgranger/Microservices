@@ -1,4 +1,4 @@
-﻿namespace RabbitMqService
+﻿namespace MongoService
 {
     using System;
     using Autofac;
@@ -13,6 +13,8 @@
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Logging;
+    using Mongo.Infrustructure.Configuration;
+    using Mongo.Infrustructure.Repositories;
 
     public class Startup
     {
@@ -30,13 +32,13 @@
                 .AddCustomMvc(this.Configuration)
                 .AddBehaviorOptions(this.Configuration)
                 .AddCustomOptions(this.Configuration)
+                .AddCustomServices(this.Configuration)
                 .AddIntegrationServices(this.Configuration)
                 .AddEventBus(this.Configuration, this.Configuration["SubscriptionClientName"])
-                .AddSwagger("RabbitMqService - Messaging API", "v1", "The RabbitMQ Microservice HTTP API. This is a Messaging microservice sample");
+                .AddSwagger("Service 1 - API", "v1", "The Service 1 Microservice HTTP API. This is a microservice sample");
 
             var container = new ContainerBuilder();
             container.Populate(services);
-
             container.RegisterModule(new ApplicationModule(this.Configuration["ConnectionString"]));
 
             return new AutofacServiceProvider(container.Build());
@@ -83,6 +85,15 @@
         public static IServiceCollection AddCustomOptions(this IServiceCollection services, IConfiguration configuration)
         {
             services.Configure<QueueSettings>(configuration);
+            services.Configure<MongoConfiguration>(configuration);
+
+            return services;
+        }
+        
+        public static IServiceCollection AddCustomServices(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.AddTransient<IMessageingDataRepository, MessageingDataRepository>();
+
             return services;
         }
     }

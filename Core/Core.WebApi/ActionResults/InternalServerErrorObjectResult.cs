@@ -1,4 +1,4 @@
-﻿namespace RabbitMqService.Infrastructure.ActionResults
+﻿namespace Core.WebApi.ActionResults
 {
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;

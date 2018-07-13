@@ -1,4 +1,4 @@
-﻿namespace RabbitMqService.Infrastructure.Exceptions
+﻿namespace Core.WebApi.Exceptions
 {
     using System;
 
